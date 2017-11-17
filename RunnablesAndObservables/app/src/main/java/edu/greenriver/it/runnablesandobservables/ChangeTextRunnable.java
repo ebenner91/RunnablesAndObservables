@@ -28,6 +28,10 @@ public class ChangeTextRunnable implements Runnable {
         this.handler = handler;
     }
 
+    public void stopRunnable() {
+        shouldRun = false;
+    }
+
     @Override
     public void run() {
         if(message == null || !shouldRun) return;
@@ -38,7 +42,9 @@ public class ChangeTextRunnable implements Runnable {
             message.setText("Something went wrong!");
         }
 
-        handler.postDelayed(this, DELAY_TIME);
+        if(shouldRun) {
+            handler.postDelayed(this, DELAY_TIME);
+        }
 
     }
 }

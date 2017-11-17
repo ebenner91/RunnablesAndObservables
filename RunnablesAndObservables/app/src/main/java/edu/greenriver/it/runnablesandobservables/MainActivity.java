@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView message;
+    TextView numDisplay;
     EditText editText;
     Button button;
 
-    Runnable changeText;
+    ChangeTextRunnable changeText;
+
+    RandomNumberRunnable randomNumberRunnable;
+
+    boolean isRunning;
 
     Runnable tbd;
 
@@ -24,15 +28,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        message = findViewById(R.id.message);
-        editText = findViewById(R.id.editText);
-        button = findViewById(R.id.button);
+        numDisplay = findViewById(R.id.randNumDisplay);
 
         Handler handler = new Handler();
 
+        button = findViewById(R.id.toggleCycle);
+
+
+        randomNumberRunnable = new RandomNumberRunnable(numDisplay, handler);
+
+
+
+        randomNumberRunnable.run();
+        isRunning = true;
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isRunning) {
+                    randomNumberRunnable.stop();
+                } else {
+                    randomNumberRunnable.start();
+                }
+            }
+        });
+
+
+
+
+
+
+/*        message = findViewById(R.id.message);
+        editText = findViewById(R.id.editText);
+        button = findViewById(R.id.button);
+
+
+
         changeText = new ChangeTextRunnable(message, editText, handler);
 
-        handler.post(changeText);
+        handler.post(changeText);*/
 
         /*button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,4 +75,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
     }
+
+/*    @Override
+    protected void onStop() {
+        super.onStop();
+
+        changeText.stopRunnable();
+    }*/
 }
